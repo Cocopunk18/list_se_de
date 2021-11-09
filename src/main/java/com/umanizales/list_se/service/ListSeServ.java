@@ -36,8 +36,8 @@ public class ListSeServ {
      }
      public void inicializagender(){
          gender = new ArrayList<>();
-         gender.add(new Gender("FEMENINO"));
-         gender.add(new Gender("MASCULINO"));
+         gender.add(Gender.FEMENINO);
+         gender.add(Gender.MASCULINO);
      }
 
 
@@ -51,7 +51,7 @@ public class ListSeServ {
     }
      public ResponseEntity<ResponseDOT> addBoy(Boy boy) throws ListaSeException{
          if (!validatelocation(boy.getLocation())){
-             throw new ListaSeException("La ubicaicón ingresada no es valida");
+             throw new ListaSeException("La ubicación ingresada no es valida");
          }
          if(listBoys.add(boy)) {
              return new ResponseEntity<>(new ResponseDOT("Niño adicionado", true, null), HttpStatus.OK);
@@ -98,18 +98,15 @@ public class ListSeServ {
       public ResponseEntity<ResponseDOT> filtGender(String gender) throws ListaSeException{
          return  new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoys.filtGender(gender),null), HttpStatus.OK);
     }
-    public ResponseEntity<ResponseDOT> listBoyByDegree(Integer degree)throws  ListaSeException {
-        return  new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoys.listBoyByDegree(degree),null), HttpStatus.OK);
+    public ResponseEntity<ResponseDOT> listBoyByGrade(byte grade)throws  ListaSeException {
+        return  new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoys.listBoyByGrade(grade),null), HttpStatus.OK);
     }
 
     public ResponseEntity<ResponseDOT> listByLocationAge(byte age, String location) throws ListaSeException{
 
          return  new ResponseEntity<>(new ResponseDOT("Satisfactorio", listBoys.listByLocationAge(age,location),null), HttpStatus.OK);
      }
-    /*public ResponseEntity<ResponseDOT> remove(Boy boy){
-        listBoys.removeBoy(boy);
-        return new ResponseEntity<>(new ResponseDOT("Niño eliminado satisfactorio",true,null), HttpStatus.OK);
-    }*/
+
     public ResponseEntity<ResponseDOT> delete(String id)throws ListaSeException{
          listBoys.delete(id);
          return new ResponseEntity<>(new ResponseDOT("Niño eliminado satisfactorio",true,null),HttpStatus.OK);
@@ -138,7 +135,7 @@ public class ListSeServ {
     public ResponseEntity<ResponseDOT> getBoysByLocation()throws ListaSeException{
         List<BoysByLocation> boysByLocations = new ArrayList<>();
         for (Location loc: locations){
-            /** capturmos en el contador lo que nos diga la lista de niños por location pot cada código de localidad*/
+            /** capturamos en el contador lo que nos diga la lista de niños por location pot cada código de localidad*/
             int count= listBoys.getCountBoysByLocation(loc.getCode());
             boysByLocations.add(new BoysByLocation(loc, count));
         }
@@ -148,7 +145,7 @@ public class ListSeServ {
     public ResponseEntity<ResponseDOT> getBoysByGender() throws ListaSeException{
         List<BoysByGender> boysByGender = new ArrayList<>();
         for (Gender gen: gender){
-         int count= listBoys.getCountBoysByGender(gen.getDescription());
+         int count= listBoys.getCountBoysByGender(gen.name());
          boysByGender.add(new BoysByGender(gen,count));
         }
         return new ResponseEntity<>(new ResponseDOT("Satisfactorio",boysByGender,null), HttpStatus.OK);

@@ -33,12 +33,13 @@ public class ListDeServ {
         locations = new ArrayList<>();
         locations.add(new Location("16917001","Manizales"));
         locations.add(new Location("16917002","Chinchina"));
+        locations.add(new Location("16917003","La dorada"));
     }
 
     public void inicializagenderDe(){
         gender = new ArrayList<>();
-        gender.add(new Gender("FEMENINO"));
-        gender.add(new Gender("MASCULINO"));
+        gender.add(Gender.MASCULINO);
+        gender.add(Gender.FEMENINO);
     }
 
     public boolean validatelocationDe(Location location){
@@ -106,9 +107,9 @@ public class ListDeServ {
         listBoys.filtGenderDe(gender);
         return  new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoys.filtGenderDe(gender),null), HttpStatus.OK);
     }
-    public ResponseEntity<ResponseDOT> listBoyByDegreeDe(Integer degree) throws ListaDeException{
-        listBoys.listBoyByDegreeDe(degree);
-        return  new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoys.listBoyByDegreeDe(degree),null), HttpStatus.OK);
+    public ResponseEntity<ResponseDOT> listBoyByGradeDe(byte grade) throws ListaDeException{
+        listBoys.listBoyByGradeDe(grade);
+        return  new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoys.listBoyByGradeDe(grade),null), HttpStatus.OK);
     }
 
     public ResponseEntity<ResponseDOT> listByLocationAgeDe(byte age, String location) throws ListaDeException{
@@ -136,7 +137,7 @@ public class ListDeServ {
     public ResponseEntity<ResponseDOT> getBoysByLocationDe(){
         List<BoysByLocation> boysByLocations = new ArrayList<>();
         for (Location loc: locations){
-            /** capturmos en el contador lo que nos diga la lista de niños por location pot cada código de localidad*/
+            /** capturamos en el contador lo que nos diga la lista de niños por location por cada código de localidad*/
             int count= listBoys.getCountBoysByLocationDe(loc.getCode());
             boysByLocations.add(new BoysByLocation(loc, count));
         }
@@ -146,7 +147,7 @@ public class ListDeServ {
     public ResponseEntity<ResponseDOT> getBoysByGenderDe(){
         List<BoysByGender> boysByGender = new ArrayList<>();
         for (Gender gen: gender){
-            int count= listBoys.getCountBoysByGenderDe(gen.getDescription());
+            int count= listBoys.getCountBoysByGenderDe(gen.name());
             boysByGender.add(new BoysByGender(gen,count));
         }
         return new ResponseEntity<>(new ResponseDOT("Satisfactorio",boysByGender,null), HttpStatus.OK);
@@ -172,6 +173,26 @@ public class ListDeServ {
     public ResponseEntity<ResponseDOT>loseByPositionDe(String id, int position) throws ListaDeException {
         listBoys.loseByPositionDe(id,position);
         return new ResponseEntity<>(new ResponseDOT("Satisfactorio",true,null),HttpStatus.OK);
+    }
+
+    public ResponseEntity<ResponseDOT>  getOrphansByGradesByLocation() throws ListaDeException {
+        /**
+         * Por último creamos una lista para tener los grados por localidad y enviar la respuesta.
+         */
+        List<GradesByLocationDTO> gradesByLocationDTOS = new ArrayList<>();
+        /**
+         *  Recorremos todas las locaciones llamando el método, y parado en cada location del método de la lista.
+         */
+        for (Location loc : locations) {
+            /**
+             * Agregamos a los grados cada location encontrada.
+             */
+            gradesByLocationDTOS.add(listBoys.getGradesByLocationDTO(loc));
+        }
+        /**
+         * Retornamos la respuesta con el método final que ya contiene la información de los 3 métodos para informe completo.
+         */
+        return new ResponseEntity<>(new ResponseDOT("Satisfactorio", gradesByLocationDTOS, null), HttpStatus.OK);
     }
 
 }

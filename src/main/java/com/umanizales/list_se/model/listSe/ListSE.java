@@ -109,7 +109,7 @@ public class ListSE {
     /**
      * Método que me permite insertar un niño en una posición dada.
      * @param boy parámetro donde llegan todos los datos del niño.
-     * @param position
+     * @param position Posición dada en la que se debe adicionar el niño.
      * @throws ListaSeException Excepción que puede generar el método cuando el niño que se está ingresando ya existe.
      */
     public void addByPosition(Boy boy, int position) throws ListaSeException {
@@ -118,7 +118,7 @@ public class ListSE {
          * */
         Boy boyExist = finById(boy.getId());
         if (boyExist != null) {
-            throw new ListaSeException("La indentificación ingresada ya existe");
+            throw new ListaSeException("La identificación ingresada ya existe");
         }
 
         /**
@@ -284,7 +284,7 @@ public class ListSE {
                  */
                 temp = temp.getNext();
             }
-            //Temp esta ubicado en el último niño
+            //Temp está ubicado en el último niño
             /**
              * Le decimos al último niño que sea la cabeza de la lista
              * y al primer niño que sacamos de la cabeza lo ubicamos de último
@@ -298,29 +298,6 @@ public class ListSE {
             throw new ListaSeException("No es posible ejecutar el cambio de extremos");
         }
     }
-
-
-
-    /*public void removeBoy(Boy boy) {
-        Node tempNode = this.head;
-        Node previous = null;
-        boolean stop = false;
-        while (tempNode != null && stop == false) {
-            if (tempNode.getData().equals(boy)) {
-                if (previous == null) {
-                    this.head = tempNode.getNext();
-                    tempNode.setNext(null);
-                } else {
-                    previous.setNext(tempNode.getNext());
-                    tempNode.setNext(null);
-                }
-                stop = true;
-            }
-            previous = tempNode;
-            tempNode = tempNode.getNext();
-        }
-        count--;
-    }*/
 
     /**
      * Método que me filtra los niños según genero dado.
@@ -346,7 +323,7 @@ public class ListSE {
                 /**
                  * Comparamos el niño donde está ubicado el ayudante(temp) con el género solicitado.
                  */
-                if (temp.getData().getGender().getDescription().equals(gender)) {
+                if (temp.getData().getGender().name().equals(gender)) {
                     /**
                      * Si cumple la condición adicionamos el niño a la lista, de lo contrario le decimos al ayudante que siga con el siguiente nodo.
                      */
@@ -368,10 +345,10 @@ public class ListSE {
 
     /**
      * Método que me permite obtener los niños de un grado de escuela dado (1,2,3,4,5)
-     * @param degree parámetro donde llega el grado solicitado.
+     * @param grade parámetro donde llega el grado solicitado.
      * @return Retornamos la lista con los niños que tienen el grado solicitado por el usuario.
      */
-    public List<Boy> listBoyByDegree(Integer degree) throws  ListaSeException{
+    public List<Boy> listBoyByGrade(byte grade) throws  ListaSeException{
         /**
          * Llamamos el método que me válida si la lista se encuentra vacía.
          */
@@ -391,7 +368,7 @@ public class ListSE {
                 /**
                  * Comparamos el niño donde está ubicado el ayudante(temp) con el grado de escuela solicitado.
                  */
-                if (temp.getData().getDegree().getDegree().equals(degree)){
+                if (temp.getData().getGrade() == grade){
                     /**
                      * Si cumple la condición adicionamos el niño a la lista, de lo contrario le decimos al ayudante que siga con el siguiente nodo.
                      */
@@ -431,7 +408,7 @@ public class ListSE {
             /**
              * Comparamos el niño donde está ubicado el ayudante(temp) con el género solicitado y adicionalmente que sea meno o igual a la edad dada.
              */
-            if (temp.getData().getGender().getDescription().equals(gender) && temp.getData().getAge() <= age) {
+            if (temp.getData().getGender().name().equals(gender) && temp.getData().getAge() <= age) {
                 /**
                  * Si el género cumple y es menor o igual a la edad que nos piden adicionamos el niño al inicio de la lista
                  */
@@ -474,7 +451,7 @@ public class ListSE {
             /**
              * Comparamos el niño donde está ubicado el ayudante(temp) con el género dado.
              */
-            if (temp.getData().getGender().getDescription().equals(gender)){
+            if (temp.getData().getGender().name().equals(gender)){
                 /**
                  * Si el niño cumple con la condición lo adicionamos al inicio dela lista.
                  */
@@ -548,11 +525,6 @@ public class ListSE {
      * @throws ListaSeException Excepción que puede generar el método cuando el niño no existe o la lista está vacía.
      */
     public void delete(String id) throws ListaSeException {
-        /**
-         * Llamamos inicialmente el método que me valida si la lista está vacía
-         */
-        validateListEmty();
-
 
         /**
          * Primero validamos si la cabeza tiene información, si la cabeza es el niño que estamos buscando, es igual a la identificación que nos piden, eliminamos.
@@ -590,7 +562,7 @@ public class ListSE {
                  */
                 if (temp != null) {
                     /**
-                     * si el ayudante no está vacío quiere decir que estamos en el nodo anterior del que tenemos que eliminar.
+                     * Si el ayudante no está vacío quiere decir que estamos en el nodo anterior del que tenemos que eliminar.
                      * Le decimos al ayudante que tome el siguiente de su siguiente.
                      */
                     temp.setNext(temp.getNext().getNext());
@@ -606,8 +578,6 @@ public class ListSE {
                 }
             }
         }
-
-        throw new ListaSeException("No hay datos en la lista");
     }
 
     /**
@@ -676,7 +646,7 @@ public class ListSE {
      * @param id Cédula, TI, CE, Sisben, que identifica el niño que voy a buscar.
      * @return retorna el niño que encontramos con todos los datos.
      */
-    public Boy finById(String id) throws  ListaSeException{
+    public Boy finById(String id){
 
         /**
          * Como no nos podemos mover de la cabeza porque se pierde la lista de los niños.
@@ -744,11 +714,11 @@ public class ListSE {
     }
 
     /**
-     * Metodo que me cuenta los niños que se tiene en la lista por género.
-     * @param description parámetro que recibe la descripción del género que se desea contar.
+     * Método que me cuenta los niños que se tiene en la lista por género.
+     * @param gender parámetro que recibe la descripción del género que se desea contar.
      * @return retorna la cantidad que se tiene de niños del género solicitado.
      */
-    public int getCountBoysByGender(String description)throws ListaSeException {
+    public int getCountBoysByGender(String gender)throws ListaSeException {
         /**
          * Llamamos el método que me válida si la lista se encuentra vacía.
          */
@@ -762,7 +732,7 @@ public class ListSE {
          * Recorremos la lista para contar cada los niños de cada localidad-
          */
         while (temp != null) {
-            if (temp.getData().getGender().getDescription().equals(description)) {
+            if (temp.getData().getGender().name().equals(gender)) {
                 /**
                  * aumentamos el contador de cada género por cada niño.
                  */
@@ -774,7 +744,7 @@ public class ListSE {
     }
 
     /**
-     * Metodo que me lista los niños por género.
+     * Método que me lista los niños por género.
      * @param gender parámetro que recibe el género que se requiere listar.
      * @return retorna la lista con el género solicitado.
      * @throws ListaSeException Excepción que puede generar el método cuando la lista está vacía.
@@ -797,7 +767,7 @@ public class ListSE {
             /**
              * Validamos que el niño que tiene el ayudante sea igual al género solicitado.
              */
-            if (temp.getData().getGender().getDescription().equals(gender)) {
+            if (temp.getData().getGender().name().equals(gender)) {
                 /**
                  * Si cumple la condición anterior adicionamos el niño al final de lista temporal.
                  */
@@ -815,7 +785,7 @@ public class ListSE {
     }
 
     /**
-     * Método que me intercala} los niños según su género en la lista.
+     * Método que me intercala los niños según su género en la lista.
      * @throws ListaSeException Excepción que puede generar el método cuando la lista está vacía.
      */
     public void variantBoys() throws ListaSeException{
@@ -892,7 +862,7 @@ public class ListSE {
              * Validamos si el niño que tiene el ayudante es igual al género que nos piden retirar de ls lista.
              * Si es asi adicionamos ese niño en la lista una de las listas temporal que inicialice (listTemp).
              */
-            if (temp.getData().getGender().getDescription().equals(gender)) {
+            if (temp.getData().getGender().name().equals(gender)) {
                 listTemp.add(temp.getData());
                 /**
                  * Si no cumple con la condición inicial adiciono ese niño en la otra lista temporal (listTemp2)
@@ -995,7 +965,7 @@ public class ListSE {
         */
        while (tempkids != null) {
            /**
-            * Comparo la edad del niño que tiene el ayudante 1 con la edad que tiene el niño del ayudante 2, adicionalmente comparo la edad que tiene el niño ya almacenada en el ayudante 3.
+            * Comparo la edad del niño que tiene el ayudante 1 con la edad que tiene el niño del ayudante 2, adicionalmente comparo la edad que tiene el niño en el ayudante 3.
             * Si cumple la condición le digo a ese nuevo niño que sea el mayor de la lista.
             */
            if (tempkids.getData().getAge() > auxkids.getData().getAge() && tempkids.getData().getAge() >= mayorkids.getData().getAge()) {
@@ -1061,7 +1031,7 @@ public class ListSE {
 
         while (temp != null) {
             /**
-             * Validamos que la idntficacion del niños que tiene el temporal sea la misma que nos dan.
+             * Validamos que la identificación de los niños que tiene el temporal sea la misma que nos dan.
              */
             if (temp.getData().getId().equals(id)) {
                 /**
@@ -1110,7 +1080,7 @@ public class ListSE {
         while (temp != null) {
             /**
              * Comparamos que el ayudante sea igual al niño dado para que adelante posiciones en la lista.
-             * Adicionalmente comparamos si la posición dada es igual a cero, si es asi lanzamos un mensanje al usuario que la posición no es válida.
+             * Adicionalmente comparamos si la posición dada es igual a cero, si es asi lanzamos un mensaje al usuario que la posición no es válida.
              */
             if (temp.getData().getId().equals(id)&& position == 0) {
                 throw new ListaSeException("La posición no es valida");
@@ -1188,7 +1158,7 @@ public class ListSE {
         while (temp != null) {
             /**
              * Comparamos que el ayudante sea igual al niño dado para que pierda posiciones en la lista.
-             * Adicionalmente comparamos si la posición dada es igual a cero, si es asi lanzamos un mensanje al usuario que la posición no es válida.
+             * Adicionalmente comparamos si la posición dada es igual a cero, si es asi lanzamos un mensaje al usuario que la posición no es válida.
              */
             if (temp.getData().getId().equals(id)&& position == 0) {
                 throw new ListaSeException("La posición no es valida");
@@ -1236,28 +1206,6 @@ public class ListSE {
 
 }
 
-   /*public ListSE listprueba() throws ListaSeException {
-       Node temp=this.head;
-       ListSE listTempmay = new ListSE();
-       Node tempkids=temp;
-       Node auxkids= tempkids;
-       Node mayorkids=null;
-       Node mayorgirl=null;
-
-
-       while (temp!=null){
-           if (tempkids.getData().getAge()>=auxkids.getData().getAge() && tempkids.getData().getGender().getDescription().equals("MASCULINO")){
-               mayorkids=tempkids;
-           }if (tempkids.getData().getGender().getDescription().equals("FEMENINO")) {
-               mayorgirl = tempkids;;
-           }
-           tempkids=temp.getNext();
-           temp= temp.getNext();
-       }
-       listTempmay.add(mayorkids.getData());
-       listTempmay.add(mayorgirl.getData());
-       return listTempmay;
-   }*/
 
 
 

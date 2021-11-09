@@ -46,7 +46,7 @@ public class BoysController {
     public ResponseEntity<ResponseDOT> invertLis() throws ListaSeException {
         return listSeServ.invertLis();
     }
-    @GetMapping(path = "invertboygender/{gender}/{age}")
+    @GetMapping(path = "invertboygenderage/{gender}/{age}")
     public ResponseEntity<ResponseDOT> invertBoyByGenderAge(@PathVariable String gender, @PathVariable byte age) throws ListaSeException {
         return listSeServ.invertBoyByGenderAge(gender, age);
     }
@@ -64,7 +64,7 @@ public class BoysController {
         for (Boy boy : boys) {
             listSeServ.addBoy(boy);
         }
-        return new ResponseEntity<>(new ResponseDOT("Niños adicionados con exito", listSeServ.listBoys(), null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDOT("Niños adicionados con éxito", listSeServ.listBoys(), null), HttpStatus.OK);
     }
 
     @GetMapping(path = "getcount")
@@ -82,18 +82,14 @@ public class BoysController {
         return listSeServ.chageXtreme();
     }
 
-    /*@PostMapping(path = "removeboy")
-    public ResponseEntity<ResponseDOT> remove(@RequestBody Boy boy) {
-        return listSeServ.remove(boy);
-    }*/
 
     @GetMapping(path = "listgender/{gender}")
     public ResponseEntity<ResponseDOT> filtGender(@PathVariable String gender) throws ListaSeException {
         return listSeServ.filtGender(gender);
     }
-    @GetMapping(path = "listboybydegree/{degree}")
-    public ResponseEntity<ResponseDOT> listBoyByDegree(@PathVariable Integer degree) throws ListaSeException {
-        return listSeServ.listBoyByDegree(degree);
+    @GetMapping(path = "listboybygrade/{grade}")
+    public ResponseEntity<ResponseDOT> listBoyByGrade(@PathVariable byte grade) throws ListaSeException {
+        return listSeServ.listBoyByGrade(grade);
     }
 
     @GetMapping(path = "listbylocationage/{age}/{location}")
@@ -213,18 +209,15 @@ public class BoysController {
         return listDeServ.chageXtremeDe();
     }
 
-    /*@PostMapping(path = "removeboy")
-    public ResponseEntity<ResponseDOT> remove(@RequestBody Boy boy) {
-        return listSeServ.remove(boy);
-    }*/
+
 
     @GetMapping(path = "listgenderde/{gender}")
     public ResponseEntity<ResponseDOT> filtGenderDe(@PathVariable String gender) throws ListaDeException {
         return listDeServ.filtGenderDe(gender);
     }
-    @GetMapping(path = "listboybydegreede/{degree}")
-    public ResponseEntity<ResponseDOT> listBoyByDegreeDe(@PathVariable Integer degree) throws ListaDeException {
-        return listDeServ.listBoyByDegreeDe(degree);
+    @GetMapping(path = "listboybygradede/{grade}")
+    public ResponseEntity<ResponseDOT> listBoyByDegreeDe(@PathVariable byte grade) throws ListaDeException {
+        return listDeServ.listBoyByGradeDe(grade);
     }
 
     @GetMapping(path = "listbylocationagede/{age}/{location}")
@@ -270,6 +263,11 @@ public class BoysController {
     @GetMapping(path = "losepositionde/{id}/{position}")
     public ResponseEntity<ResponseDOT> loseByPositionDe(@PathVariable String id, @PathVariable int position) throws ListaDeException{
         return listDeServ.loseByPositionDe(id,position);
+    }
+
+    @GetMapping(path = "getorphansbygradesbylocation")
+    public ResponseEntity<ResponseDOT> getOrphansByGradesByLocation() throws ListaDeException{
+        return listDeServ.getOrphansByGradesByLocation();
     }
 
 }
