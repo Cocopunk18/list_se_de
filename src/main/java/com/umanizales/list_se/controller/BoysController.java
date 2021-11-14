@@ -252,7 +252,7 @@ public class BoysController {
     public ResponseEntity<ResponseDOT> variantBoyDe() throws ListaDeException{
         return listDeServ.variantListDe();
     }
-    @GetMapping(path = "boysgirlsgreaterde/")
+    @GetMapping(path = "boysgirlsgreaterde")
     public ResponseEntity<ResponseDOT> boysGirlsGreaterDe() throws ListaDeException{
         return listDeServ.boysGirlsGreaterDe();
     }
@@ -269,5 +269,12 @@ public class BoysController {
     public ResponseEntity<ResponseDOT> getOrphansByGradesByLocation() throws ListaDeException{
         return listDeServ.getOrphansByGradesByLocation();
     }
-
+    @GetMapping(path = "getorderboyandgirl")
+    public ResponseEntity<ResponseDOT> getOrderBoyAndGirl()throws ListaDeException{
+        return listDeServ.getOrderBoyAndGirl();
+    }
+    @GetMapping(path = "getlocationbygenderbygradebyrh")
+    public ResponseEntity<ResponseDOT> getLocationByGenderByGradeByRh(){
+        return listDeServ.getLocationByGenderByGradeByRh();
+    }
 }

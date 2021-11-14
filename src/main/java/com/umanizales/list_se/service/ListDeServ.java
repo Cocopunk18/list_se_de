@@ -194,5 +194,27 @@ public class ListDeServ {
          */
         return new ResponseEntity<>(new ResponseDOT("Satisfactorio", gradesByLocationDTOS, null), HttpStatus.OK);
     }
-
+    public ResponseEntity<ResponseDOT> getOrderBoyAndGirl()throws ListaDeException{
+        listBoys.getOrderBoyAndGirl();
+        return new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoysFreesDe(), null), HttpStatus.OK);
+    }
+    public ResponseEntity<ResponseDOT> getLocationByGenderByGradeByRh() {
+        /**
+         * Por último creamos una lista para tener los grados por localidad y enviar la respuesta.
+         */
+        List<BoysByLocationByGenderDTO> boysByLocationByGenderDTO = new ArrayList<>();
+        /**
+         *  Recorremos todas las locaciones llamando el método, y parado en cada location del método de la lista.
+         */
+        for (Location loc : locations) {
+            /**
+             * Agregamos a los grados cada location encontrada.
+             */
+            boysByLocationByGenderDTO.add(listBoys.getBoysByLocationByGenderDTO(loc));
+        }
+        /**
+         * Retornamos la respuesta con el método final que ya contiene la información de los 3 métodos para informe completo.
+         */
+        return new ResponseEntity<>(new ResponseDOT("Satisfactorio", boysByLocationByGenderDTO, null), HttpStatus.OK);
+    }
 }
