@@ -1361,24 +1361,27 @@ public class ListDE {
 
             boysByGradeRhDTO[i] = getGradeByRh((byte) (i + 1));
         }
+
         return new BoysByGenderByGradeDTO(gender, boysByGradeRhDTO);
     }
 
     public BoysByLocationByGenderDTO getBoysByLocationByGenderDTO(Location location) {
         List<BoysByGenderByGradeDTO> boysByGenderByGradeDTO = new ArrayList<>();
         int count=0;
-        Node temp= this.getHeadDe();
+        Node temp= this.headDe;
         while (temp!=null){
-            if (temp.getData().getLocation().getCode().equals(location)){
-                boysByGenderByGradeDTO.add(getboysByGenderByGradeDTO(temp.getData().getGender()));
+            if (temp.getData().getLocation().getCode().equals(location.getCode())) {
                 count++;
             }
             temp=temp.getNext();
         }
-
-            return new BoysByLocationByGenderDTO(location,boysByGenderByGradeDTO,count);
-        }
+        boysByGenderByGradeDTO.add(getboysByGenderByGradeDTO(Gender.MASCULINO));
+        boysByGenderByGradeDTO.add(getboysByGenderByGradeDTO(Gender.FEMENINO));
+        BoysByLocationByGenderDTO boysByLocationByGenderDTO = new BoysByLocationByGenderDTO(location,boysByGenderByGradeDTO,count);
+        return boysByLocationByGenderDTO;
     }
+
+}
 
 
 

@@ -198,7 +198,7 @@ public class ListDeServ {
         listBoys.getOrderBoyAndGirl();
         return new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoysFreesDe(), null), HttpStatus.OK);
     }
-    public ResponseEntity<ResponseDOT> getLocationByGenderByGradeByRh() {
+    public ResponseEntity<ResponseDOT> getBoysByLocationByGenderDTO() {
         /**
          * Por último creamos una lista para tener los grados por localidad y enviar la respuesta.
          */
@@ -217,4 +217,5 @@ public class ListDeServ {
          */
         return new ResponseEntity<>(new ResponseDOT("Satisfactorio", boysByLocationByGenderDTO, null), HttpStatus.OK);
     }
+
 }

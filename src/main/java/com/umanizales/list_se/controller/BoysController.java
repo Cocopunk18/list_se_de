@@ -145,6 +145,7 @@ public class BoysController {
     }
 
 
+
     //---------------------------------Lista DE---------------------------------------
 
     @PostMapping(path = "deaddboys")
@@ -273,8 +274,8 @@ public class BoysController {
     public ResponseEntity<ResponseDOT> getOrderBoyAndGirl()throws ListaDeException{
         return listDeServ.getOrderBoyAndGirl();
     }
-    @GetMapping(path = "getlocationbygenderbygradebyrh")
-    public ResponseEntity<ResponseDOT> getLocationByGenderByGradeByRh(){
-        return listDeServ.getLocationByGenderByGradeByRh();
+   @GetMapping(path = "getlocationbygenderbygradebyrh")
+    public ResponseEntity<ResponseDOT> getBoysByLocationByGenderDTO(){
+        return listDeServ.getBoysByLocationByGenderDTO();
     }
 }

@@ -8,9 +8,7 @@ package com.umanizales.list_se.model.listSe;
  */
 
 import com.umanizales.list_se.exception.ListaSeException;
-import com.umanizales.list_se.model.Boy;
-import com.umanizales.list_se.model.BoysByLocation;
-import com.umanizales.list_se.model.Location;
+import com.umanizales.list_se.model.*;
 import com.umanizales.list_se.model.listDe.ListDE;
 import lombok.Data;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +23,7 @@ public class ListSE {
     private Node head;
     /** atributo contador para saber cuantos niños tenemos en la lista.*/
     private int count;
+    private List<Gender> gender;
 
     /**
      * Método que adiciona un niño al final de la lista.
@@ -1203,8 +1202,9 @@ public class ListSE {
          */
 
         }
-
 }
+
+
 
 
 
