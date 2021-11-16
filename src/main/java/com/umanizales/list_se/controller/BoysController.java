@@ -275,7 +275,11 @@ public class BoysController {
         return listDeServ.getOrderBoyAndGirl();
     }
    @GetMapping(path = "getlocationbygenderbygradebyrh")
-    public ResponseEntity<ResponseDOT> getBoysByLocationByGenderDTO(){
+    public ResponseEntity<ResponseDOT> getBoysByLocationByGenderDTO()throws ListaDeException{
         return listDeServ.getBoysByLocationByGenderDTO();
+    }
+    @GetMapping(path = "getlocationorder")
+    public ResponseEntity<ResponseDOT> getLocationOrderDe()throws ListaDeException{
+        return listDeServ.getLocationOrderDe();
     }
 }

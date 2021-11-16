@@ -1334,27 +1334,55 @@ public class ListDE {
         this.headDe = listTempB.getHeadDe();
     }
 
-
+    /**
+     * Método que filtra y me dice el RH de los niños por cada grado.
+     * @param grade Se recibe el grado para hacer el filtro y conocer el rh de los niños que hay en cada grado.
+     * @return se retorna la información Grado, Rh existentes y el contador.
+     */
     public BoysByGradeRhDTO getGradeByRh(byte grade) {
-
+        /**
+         * Se llama un ayudante y le decimos que se ubique en la cabeza
+         * Declaramos una variable de tipo String para el rh del niño y enviar la cadena concatenada de todos los rh que se encuentren.
+         * Iniciamos ubn contador en cero.
+         */
         Node temp = this.headDe;
         String rh = "";
         int count = 0;
+        /**
+         * Recorremos la lista de inicio a fin.
+         */
         while (temp != null) {
+            /**
+             * Realizamos una condición donde indicamos que si el niño pertenece al grado que nos llega pase, si no sigua con el siguiente niño.
+             */
             if (temp.getData().getGrade() == grade) {
                 /**
-                 * Garantizo que no se me repita el rh del niño y concatenamos los rh
+                 *  En esta parte Garantizo que no se me repita el rh del niño y concatenamos los rh
                  */
                 if (!rh.contains(temp.getData().getRh())) {
                     rh = rh + ", " + temp.getData().getRh();
                 }
+                /**
+                 * Aumentamos el contador.
+                 */
                 count++;
             }
+            /**
+             * Le decimos al ayudante que siga con el siguiente niño hasta llegar al último
+             */
             temp = temp.getNext();
         }
+        /**
+         * Retornamos una parte del informe de los rh por cada grado y su contador.
+         */
         return new BoysByGradeRhDTO(grade, rh, count);
     }
 
+    /**
+     * Método que recibe un género y me arma el informe de los grados por género.
+     * @param gender género que se recibe para que el informe muestre los grados en los que se encuentran los niños por género.
+     * @return retornamos los géneros de los niños y el arreglo de los 5 grados.
+     */
     public BoysByGenderByGradeDTO getboysByGenderByGradeDTO(Gender gender) {
         BoysByGradeRhDTO[] boysByGradeRhDTO = new BoysByGradeRhDTO[5];
         for (byte i = 1; i <= 5; i++) {
@@ -1365,20 +1393,122 @@ public class ListDE {
         return new BoysByGenderByGradeDTO(gender, boysByGradeRhDTO);
     }
 
-    public BoysByLocationByGenderDTO getBoysByLocationByGenderDTO(Location location) {
+    /**
+     * Método que recibe una localización y no retorna un informe por cada localización el género por niño y por cada género el grado y los rh.
+     * @param location
+     * @return
+     */
+    public BoysByLocationByGenderDTO getBoysByLocationByGenderDTO(Location location) throws ListaDeException{
+        validateListaEmty();
+        /**
+         * Inicializamos una lista de la clase BoysByGenderByGradeDTO para construir una parte del informe.
+         * Iniciamos un contador en cero.
+         * Y llamamos un ayudante y le decimos que se ubique en la cabeza.
+         */
         List<BoysByGenderByGradeDTO> boysByGenderByGradeDTO = new ArrayList<>();
         int count=0;
         Node temp= this.headDe;
+        /**
+         * Recorremos la lista de principio a fin.
+         */
         while (temp!=null){
+            /**
+             * Realizamos la condición que si el niño pertenece a la localidad que se reciba pase.
+             * Aumentamos el contador por cada niño que tenga esa localidad
+             * y le agregamos a la lista el género del niño y le enviamos al método getboysByGenderByGradeDTO ese niño y su género.
+             */
             if (temp.getData().getLocation().getCode().equals(location.getCode())) {
                 count++;
+               //boysByGenderByGradeDTO.add(getboysByGenderByGradeDTO(temp.getData().getGender()));
+
             }
+            /**
+             * Le decimos al ayudante que siga con el siguiente niño hasta llegar al último
+             */
             temp=temp.getNext();
         }
-        boysByGenderByGradeDTO.add(getboysByGenderByGradeDTO(Gender.MASCULINO));
-        boysByGenderByGradeDTO.add(getboysByGenderByGradeDTO(Gender.FEMENINO));
+        //boysByGenderByGradeDTO.add(getboysByGenderByGradeDTO(Gender.MASCULINO));
+        //boysByGenderByGradeDTO.add(getboysByGenderByGradeDTO(Gender.FEMENINO));
+        /**
+         * Construimos el informe enviando por localidad, el género y el contador de niño por localidad.
+         */
         BoysByLocationByGenderDTO boysByLocationByGenderDTO = new BoysByLocationByGenderDTO(location,boysByGenderByGradeDTO,count);
         return boysByLocationByGenderDTO;
+    }
+
+    /**
+     * Método que nos adiciona un nodo en la lista.
+     * @param nodeexist recibimos como parámetro el nodo existente en la lista.
+     * @throws ListaDeException
+     */
+    public void addNodenew(Node nodeexist)throws ListaDeException{
+        /**
+         * decimos que si la cabeza es igual a null no coloque lo que ya tenemos
+         */
+        if(this.headDe == null){
+            /**
+             * Llamamos la cabeza y lo igualamos lal nodo exist que sería la lista ya existente.
+             *
+             */
+            this.headDe = nodeexist;
+        }
+        /**
+         * De lo contrario se llama un ayudante y le decimos que se ubique en la cabeza
+         */
+        else {
+            Node temp = headDe;
+            /**
+             * Realizamos un ciclo que nos recorra la lista hasta quedar en el último
+             */
+            while (temp.getNext() != null) {
+                temp = temp.getNext();
+            }
+            /**
+             * Primero le decimos al ayudante que tome el nodo existente.
+             * Posteriormente le decimos al nodo existente que tome a su anterior que es el ayudante(temp).
+             */
+            temp.setNext(nodeexist);
+            nodeexist.setPrevious(temp);
+        }
+    }
+
+    /**
+     * Método que nos genera una lista por cada localización
+     * @param location parámetro que solicita para generar la lista.
+     * @return se retorna una la lista por cada localización
+     * @throws ListaDeException
+     */
+    public ListDE getLocationOrderDe(Location location)throws ListaDeException{
+        /**
+         * validamos que la lista no este vacía.
+         */
+        validateListaEmty();
+        /**
+         * Creamos una lista temporal
+         * Llamamos un ayudante y le decimos que se ubique en la cabeza de la lista.
+         */
+        ListDE listemp = new ListDE();
+        Node temp = this.headDe;
+        /**
+         * Recorremos la lista de principio a fin.
+         */
+        while(temp!= null){
+            /**
+             * Se crea una primera condición indicación qeu si el niño es igual a la localización que llega ingrese.
+             * Si cumple con la condición se agrega la información a la lista temporal
+             * */
+            if (temp.getData().getLocation().equals(location)){
+                listemp.addBoyDe(temp.getData());
+            }
+            /**
+             * Le decimos al ayudante que pase al siguiente hasta llegar al último de la lista.
+             **/
+            temp = temp.getNext();
+        }
+        /**
+         * retornamos la lista temporal que realizamos.
+         */
+        return listemp;
     }
 
 }

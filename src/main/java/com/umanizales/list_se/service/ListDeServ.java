@@ -198,7 +198,7 @@ public class ListDeServ {
         listBoys.getOrderBoyAndGirl();
         return new ResponseEntity<>(new ResponseDOT("Satisfactorio",listBoysFreesDe(), null), HttpStatus.OK);
     }
-    public ResponseEntity<ResponseDOT> getBoysByLocationByGenderDTO() {
+    public ResponseEntity<ResponseDOT> getBoysByLocationByGenderDTO() throws ListaDeException {
         /**
          * Por último creamos una lista para tener los grados por localidad y enviar la respuesta.
          */
@@ -216,6 +216,34 @@ public class ListDeServ {
          * Retornamos la respuesta con el método final que ya contiene la información de los 3 métodos para informe completo.
          */
         return new ResponseEntity<>(new ResponseDOT("Satisfactorio", boysByLocationByGenderDTO, null), HttpStatus.OK);
+    }
+    public ResponseEntity<ResponseDOT> getLocationOrderDe() throws ListaDeException {
+        {
+            /**
+             * Creamos una lista temporal
+             */
+            ListDE listTemp = new ListDE();
+            /**
+             * Realizamos un ciclo que nos recorra todas las localizaciones
+             */
+            for (Location loc: locations)
+            {
+                /**
+                 * Se crea una lista en donde se van a listar en orden las localizaciones
+                 */
+                ListDE getloc = this.listBoys.getLocationOrderDe(loc);
+                /**
+                 * Luego se realiza una condición donde indicamos que si la cabeza de ls lista tiene datos, nos agregue la información del nodo a la lista temporal
+                 */
+                if(getloc.getHeadDe()!=null){
+                    listTemp.addNodenew(getloc.getHeadDe());
+                }
+            }
+            /**
+             * retornamos la lista con las localizaciones ordenadas.
+             */
+            return new ResponseEntity<>(new ResponseDOT("Satisfactorio", listTemp.listDe(), null), HttpStatus.OK);
+    }
     }
 
 }
