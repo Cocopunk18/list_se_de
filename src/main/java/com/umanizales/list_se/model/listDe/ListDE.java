@@ -1298,7 +1298,7 @@ public class ListDE {
 
     /**
      * Código de estudiante: 82202027428
-     * Método que me ordena primero los niños en orden en el orden "del último en ingresar al primero en ingresar", y luego las niñas en el orden "las primeras en ingresar a la última en ingresar".
+     * Método que me ordena primero los niños en el orden "del último en ingresar al primero en ingresar", y luego las niñas en el orden "las primeras en ingresar a la última en ingresar".
      *
      * @throws ListaDeException
      */
